@@ -490,6 +490,16 @@ static void bind_to_free_cpu(void) {
 
   }
 
+  if (getenv("AFL_CPU_CORE")) {
+    s32 cpu_core = atoi(getenv("AFL_CPU_CORE"));
+    if (cpu_core < 0 || cpu_core >= cpu_core_count || cpu_used[cpu_core]) {
+      FATAL("Invalid value of AFL_CPU_CORE");
+    }
+    else {
+      i = cpu_core;
+    }
+  }
+
   OKF("Found a free CPU core, binding to #%u.", i);
 
   cpu_aff = i;
